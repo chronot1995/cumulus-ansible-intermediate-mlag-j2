@@ -2,7 +2,7 @@
 # Created by Topology-Converter v4.6.8
 #    Template Revision: v4.6.8
 #    https://github.com/cumulusnetworks/topology_converter
-#    using topology data from: ansible-training-clag-nclu.dot
+#    using topology data from: ansible-training-clag-j2.dot
 
 echo "################################################"
 echo "  Running Automatic Management Server Setup..."
@@ -15,8 +15,8 @@ echo " Detected vagrant user is: $username"
 #       KNOBS
 #######################
 
-REPOSITORY="https://github.com/CumulusNetworks/ansible-training-clag-nclu"
-REPONAME="ansible-training-clag-nclu"
+REPOSITORY="https://github.com/CumulusNetworks/int-ansible-training-clag-j2"
+REPONAME="int-ansible-training-clag-j2"
 
 #Install Automation Tools
 puppet=0
