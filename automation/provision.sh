@@ -1,2 +1,2 @@
 #!/bin/bash
-ansible-playbook training-clag-nclu.yml
+ansible-playbook training-clag-j2.yml

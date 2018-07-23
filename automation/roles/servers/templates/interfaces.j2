@@ -5,16 +5,34 @@
 auto lo
 iface lo inet loopback
 
-auto eth0
-iface eth0 inet dhcp
-
 auto eth1
-iface eth1 inet static
-  address {{node[inventory_hostname]["ports"]["eth1"]["ip"]}}
-  ### STATIC ROUTING ###
-  post-up route add -net 10.0.0.0 netmask 255.0.0.0 gw {{node[inventory_hostname]["ports"]["eth1"]["gw"]}}
-  post-up route add -net 192.168.0.0 netmask 255.255.0.0 gw {{node[inventory_hostname]["ports"]["eth1"]["gw"]}}
-  pre-down route del -net 10.0.0.0 netmask 255.0.0.0 gw {{node[inventory_hostname]["ports"]["eth1"]["gw"]}}
-  pre-down route del -net 192.168.0.0 netmask 255.255.0.0 gw {{node[inventory_hostname]["ports"]["eth1"]["gw"]}}
+iface eth1 inet manual
+  bond-master uplink
+  # Required for Vagrant
+  post-up ip link set promisc on dev eth1
+
+auto eth2
+iface eth2 inet manual
+  bond-master uplink
+  # Required for Vagrant
+  post-up ip link set promisc on dev eth2
+
+auto uplink
+iface uplink inet static
+    bond-mode 802.3ad
+    bond-xmit-hash-policy layer3+4
+    bond-lacp-bypass-allow no
+    bond-lacp-rate fast
+    bond-miimon 100
+    bond-min-links 1
+    bond-use-carrier yes
+    bond-updelay 0
+    bond-downdelay 0
+    bond-slaves eth1 eth2
+    address {{node[inventory_hostname]["ports"]["uplink"]["ip"]}}
+    post-up route add -net 10.0.0.0 netmask 255.0.0.0 gw {{node[inventory_hostname]["ports"]["uplink"]["gw"]}}
+    post-up route add -net 192.168.0.0 netmask 255.255.0.0 gw {{node[inventory_hostname]["ports"]["uplink"]["gw"]}}
+    pre-down route del -net 10.0.0.0 netmask 255.0.0.0 gw {{node[inventory_hostname]["ports"]["uplink"]["gw"]}}
+    pre-down route del -net 192.168.0.0 netmask 255.255.0.0 gw {{node[inventory_hostname]["ports"]["uplink"]["gw"]}}
 
 source /etc/network/interfaces.d/*.cfg

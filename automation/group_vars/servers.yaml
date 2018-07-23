@@ -3,13 +3,13 @@ node:
     ports:
       eth0:
         dhcp:
+        ip:
+        gw:
       eth1:
-        ip: 192.168.11.111/24
-        gw: 192.168.11.1
-  server02:
-    ports:
-      eth0:
         dhcp:
-      eth1:
-        ip: 192.168.11.222/24
-        gw: 192.168.11.1
+        ip:
+        gw:
+      uplink:
+        dhcp:
+        ip: 172.16.121.100/24
+        gw: 172.16.121.1
