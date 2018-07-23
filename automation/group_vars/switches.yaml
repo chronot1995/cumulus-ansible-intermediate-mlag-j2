@@ -1,10 +1,10 @@
 node:
-  leaf01:
+  switch01:
     mlag:
       address:
-      backup-ip:
+      backupip:
       members:
-      peer-ip:
+      peerip:
       sysmac:
       interfaces:
         bond01:
@@ -13,7 +13,7 @@ node:
           mode:
           vlans:
     overlay:
-      anycast-ip:
+      anycastip:
       vxlan:
         vni11:
           vlan: "11"
@@ -50,12 +50,12 @@ node:
           vrrp:
             mac:
             ip:
-  leaf02:
+  switch02:
     mlag:
       address:
-      backup-ip:
+      backupip:
       members:
-      peer-ip:
+      peerip:
       sysmac:
       interfaces:
         bond01:
@@ -64,7 +64,7 @@ node:
           mode:
           vlans:
     overlay:
-      anycast-ip:
+      anycastip:
       vxlan:
         vni11:
           vlan: "11"
@@ -87,104 +87,6 @@ node:
         neighbors:
       bgp:
         asn: 65222
-        underlay:
-          external:
-            peers:
-              - swp1
-              - swp2
-          internal:
-            peers:
-      svi:
-        interface:
-          ip:
-          vlan:
-          vrrp:
-            mac:
-            ip:
-  spine01:
-    mlag:
-      address:
-      backup-ip:
-      members:
-      peer-ip:
-      sysmac:
-      interfaces:
-        bond01:
-          clagid:
-          members:
-          mode:
-          vlans:
-    overlay:
-      anycast-ip:
-      vxlan:
-        vniint:
-          vlan:
-    ports:
-      - swp1
-      - swp2
-    lacp:
-      interfaces:
-        members:
-    switching:
-      interface:
-        mode:
-        vlans:
-    routing:
-      lo: 10.3.3.3/32
-      ospf:
-        area:
-        neighbors:
-      bgp:
-        asn: 65333
-        underlay:
-          external:
-            peers:
-              - swp1
-              - swp2
-          internal:
-            peers:
-      svi:
-        interface:
-          ip:
-          vlan:
-          vrrp:
-            mac:
-            ip:
-  spine02:
-    mlag:
-      address:
-      backup-ip:
-      members:
-      peer-ip:
-      sysmac:
-      interfaces:
-        bond01:
-          clagid:
-          members:
-          mode:
-          vlans:
-    overlay:
-      anycast-ip:
-      vxlan:
-        vniint:
-          vlan:
-    ports:
-      - swp1
-      - swp2
-    lacp:
-      interfaces:
-        members:
-    switching:
-      interface:
-        mode:
-        vlans:
-    routing:
-      lo: 10.4.4.4/32
-      ospf:
-        area:
-        neighbors:
-      bgp:
-        asn: 65444
         underlay:
           external:
             peers:
