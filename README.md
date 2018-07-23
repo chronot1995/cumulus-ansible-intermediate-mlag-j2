@@ -1,2 +1,2 @@
-# ansible-training-clag-j2
-Two Cumulus switches and one server configured with CLAG using Jinja / J2 templates
+# ansible-training-ospf-nclu
+Two switches configured with OSPF using Cumulus' NCLU Ansible module
