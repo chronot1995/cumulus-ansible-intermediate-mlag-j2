@@ -16,7 +16,7 @@ iface {{interface}}
 {% endfor %}
 
 auto peerlink
-iface peerlink {{ node[inventory_hostname]["mlag"]["members"] | join " " }}
+iface peerlink {{ node[inventory_hostname].mlag.members | join(" ") }}
 
 {% for vlanint in node[inventory_hostname]["routing"]["svi"] -%}
 auto {{vlanint}}
