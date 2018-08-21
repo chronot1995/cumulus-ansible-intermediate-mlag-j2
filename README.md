@@ -1,4 +1,4 @@
-## int-ansible-training-clag-nclu
+## int-ansible-training-clag-j2
 
 ### Summary:
 
@@ -6,7 +6,7 @@ This is an Ansible demo which configures two Cumulus VX switches in a CLAG confi
 
 ### Network Diagram:
 
-![Network Diagram](https://github.com/chronot1995/int-ansible-training-clag-nclu/blob/master/documentation/int-ansible-training-clag-nclu.png)
+![Network Diagram](https://github.com/chronot1995/int-ansible-training-clag-j2/blob/master/documentation/int-ansible-training-clag-j2.png)
 
 ### Initializing the demo environment:
 
@@ -22,11 +22,11 @@ First, make sure that the following is currently running on your machine:
 
 3. Copy the Git repo to your local machine:
 
-    ```git clone https://github.com/chronot1995/int-ansible-training-clag-nclu```
+    ```git clone https://github.com/chronot1995/int-ansible-training-clag-j2```
 
 4. Change directories to the following
 
-    ```int-ansible-training-clag-nclu```
+    ```int-ansible-training-clag-j2```
 
 6. Run the following:
 
@@ -41,11 +41,11 @@ First, make sure that the following is currently running on your machine:
 
 2. Copy the Git repo unto the oob-mgmt-server:
 
-    ```git clone https://github.com/chronot1995/int-ansible-training-clag-nclu```
+    ```git clone https://github.com/chronot1995/int-ansible-training-clag-j2```
 
 3. Change directories to the following
 
-    ```int-ansible-training-clag-nclu/automation```
+    ```int-ansible-training-clag-j2/automation```
 
 4. Run the following:
 
@@ -143,7 +143,7 @@ MII Status: up
 
 3. The following command was used to run the Topology Converter within the vx-simulation directory:
 
-    ```python2 topology_converter.py int-ansible-training-clag-nclu.dot -c```
+    ```python2 topology_converter.py int-ansible-training-clag-j2.dot -c```
 
     After the above command is executed, the following configuration changes are necessary:
 
