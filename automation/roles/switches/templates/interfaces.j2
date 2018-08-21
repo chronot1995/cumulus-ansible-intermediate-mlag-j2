@@ -30,13 +30,11 @@ populate the VLAN Aware Bridge at the end of this file
 {%- for interface in node[inventory_hostname]["ports"] -%}
 auto {{interface}}
 iface {{interface}}
+
 {% endfor %}
 
-{% for lagports in node[inventory_hostname]["mlag"][members] -%}
 auto peerlink
-iface peerlink {{ lagports }}
-
-{% endfor %}
+iface peerlink {{ node[inventory_hostname]["mlag"]["members"] | join " " }}
 
 {% for vlanint in node[inventory_hostname]["routing"]["svi"] -%}
 auto {{vlanint}}
