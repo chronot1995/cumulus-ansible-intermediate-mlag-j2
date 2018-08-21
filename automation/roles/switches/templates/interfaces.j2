@@ -29,7 +29,11 @@ populate the VLAN Aware Bridge at the end of this file
 {%- for interface in node[inventory_hostname]["ports"] -%}
 auto {{interface}}
 iface {{interface}}
-   mtu 9216
+{% endfor %}
+
+{%- for interface in node[inventory_hostname]["ports"] -%}
+auto {{interface}}
+iface {{interface}}
 {% if node[inventory_hostname]["switching"][interface] is defined %}
 {% if node[inventory_hostname]["switching"][interface]["mode"] == "access" %}
 {% for vlan in node[inventory_hostname]["switching"][interface]["vlans"] -%}
@@ -66,6 +70,16 @@ iface {{interface}}
 {% endfor %}
 {% endif %}
 {% endif %}
+
+{% for vlanint in node[inventory_hostname]["routing"]["svi"] -%}
+auto {{vlanint}}
+iface {{vlanint}}
+    address {{ node[inventory_hostname]["routing"]["svi"][vlanint]["ip"] }}
+    vlan-id {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vlan"] }}
+    vlan-raw-device bridge
+{% if node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["ip"] is defined %}
+    address-virtual {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["ip"] }} {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["mac"] }}
+{% endfor %}
 
 {% if global_vlan_list != [] %}
 auto bridge
