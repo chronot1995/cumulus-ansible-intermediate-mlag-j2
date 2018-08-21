@@ -32,9 +32,10 @@ auto {{interface}}
 iface {{interface}}
 {% endfor %}
 
-{% for lagports in node[inventory_hostname]["mlag"]["members"] -%}
+{% for lagports in node[inventory_hostname]["mlag"][members] -%}
 auto peerlink
-iface peerlink {{ lagports | join(" ") }}
+iface peerlink {{ lagports }}
+
 {% endfor %}
 
 {% for vlanint in node[inventory_hostname]["routing"]["svi"] -%}
