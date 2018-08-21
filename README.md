@@ -2,7 +2,7 @@
 
 ### Summary:
 
-This is an Ansible demo which configures two Cumulus VX switches in a CLAG configuration with a Linux server. This demo will utilize the Jinja2 / J2 templates with Ansible.
+This is an Ansible demo which configures two Cumulus VX switches in a CLAG configuration with a Linux server. This demo will utilize Jinja2 / J2 templates and Ansible.
 
 ### Network Diagram:
 
