@@ -45,7 +45,7 @@ iface {{vlanint}}
 
 auto bridge
 iface bridge
-    bridge-ports {{ node[inventory_hostname]["switching"].bridge | join " " }}
+{#    bridge-ports {{ node[inventory_hostname]["switching"].bridge | join " " }} #}
 {% for bridgevlans in node[inventory_hostname]["switching"]["vlans"] %}
     bridge-vids {{ bridgevlans }}
 {% endfor %}
