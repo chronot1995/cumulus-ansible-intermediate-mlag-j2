@@ -46,5 +46,7 @@ iface {{vlanint}}
 auto bridge
 iface bridge
 {#    bridge-ports {{ node[inventory_hostname].switching.bridge | join " " }} #}
-    bridge-vids {{ node[inventory_hostname]["switching"]["vlans"] }}
+{% for bridgevlans in node[inventory_hostname]["switching"]["vlans"] -%}
+    bridge-vids {{ bridgevlans }}
+{% endfor %}
     bridge-vlan-aware yes
