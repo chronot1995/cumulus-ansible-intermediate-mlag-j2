@@ -27,14 +27,3 @@ iface {{vlanint}}
     vlan-raw-device bridge
     address-virtual {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["ip"] }} {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["mac"] }}
 {% endfor %}
-
-{#
-{% if global_vlan_list != [] %}
-auto bridge
-iface bridge
-    bridge-ports {{ bridge_ports | unique | sort | join(" ") }}
-    bridge-pvid 1
-    bridge-vids {{ global_vlan_list | unique | sort | join(" ") }}
-    bridge-vlan-aware yes
-{% endif %}
-#}
