@@ -18,6 +18,14 @@ iface {{interface}}
 auto peerlink
 iface peerlink {{ node[inventory_hostname].mlag.members | join(" ") }}
 
+auto peerlink.4094
+iface peerlink.4094
+   address {{ node[inventory_hostname]["mlag"]["address"] }}
+   clagd-backup-ip {{ node[inventory_hostname]["mlag"]["backupip"] }} vrf mgmt
+   clagd-peer-ip {{ node[inventory_hostname]["mlag"]["peerip"] }}
+   clagd-priority {{ node[inventory_hostname]["mlag"]["priority"] }}
+   clagd-sys-mac {{ node[inventory_hostname]["mlag"]["sysmac"] }}
+
 {% for interface in node[inventory_hostname]["mlag"]["interfaces"] -%}
 auto {{interface}}
 iface {{interface}}
