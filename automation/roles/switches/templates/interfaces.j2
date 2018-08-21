@@ -22,9 +22,8 @@ iface peerlink {{ node[inventory_hostname].mlag.members | join(" ") }}
 auto {{interface}}
 iface {{interface}}
    bond-slaves {{ node[inventory_hostname]["mlag"]["interfaces"][interface].members }}
-{#   bridge-access {{ interface.vlans }}
-   clad-id {{ interface.clagid }}
-#}
+   bridge-access {{  node[inventory_hostname]["mlag"]["interfaces"][interface].vlans }}
+   clad-id {{  node[inventory_hostname]["mlag"]["interfaces"][interface].clagid }}
 {% endfor %}
 
 {% for vlanint in node[inventory_hostname]["routing"]["svi"] -%}
