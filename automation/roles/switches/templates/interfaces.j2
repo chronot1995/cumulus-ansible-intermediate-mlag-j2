@@ -42,3 +42,9 @@ iface {{vlanint}}
     vlan-raw-device bridge
     address-virtual {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["ip"] }} {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["mac"] }}
 {% endfor %}
+
+auto bridge
+iface bridge
+    bridge-ports {{ node[inventory_hostname]["switching"].bridge | join " " }}
+    bridge-vids {{ node[inventory_hostname]["switching"].vlans | join " " }}
+    bridge-vlan-aware yes
