@@ -30,8 +30,8 @@ iface peerlink.4094
 auto {{interface}}
 iface {{interface}}
    bond-slaves {{ node[inventory_hostname]["mlag"]["interfaces"][interface].members }}
-   bridge-access {{  node[inventory_hostname]["mlag"]["interfaces"][interface].vlans }}
-   clad-id {{  node[inventory_hostname]["mlag"]["interfaces"][interface].clagid }}
+   bridge-access {{ node[inventory_hostname]["mlag"]["interfaces"][interface].vlans }}
+   clad-id {{ node[inventory_hostname]["mlag"]["interfaces"][interface].clagid }}
 {% endfor %}
 
 {% for vlanint in node[inventory_hostname]["routing"]["svi"] -%}
