@@ -51,14 +51,16 @@ First, make sure that the following is currently running on your machine:
 
     ```./provision.sh```
 
-This will bring run the automation script and configure the two switches with BGP.
+This will bring run the automation script and configure the two switches with CLAG.
 
 ### Troubleshooting
 
 Helpful NCLU troubleshooting commands:
 
+- net show clag
+- net show interface bonds
+- net show interface bondmems
 - net show route
-- net show bgp summary
 - net show interface | grep -i UP
 - net show lldp
 
@@ -67,71 +69,67 @@ Helpful Linux troubleshooting commands:
 - ip route
 - ip link show
 - ip address <interface>
+- cat /proc/net/bonding/uplink
 
-The BGP Summary command will show if each switch has formed an IPv6 and an l2vpn neighbor relationship:
-
-```
-cumulus@leaf01:mgmt-vrf:~$ net show bgp summary
-
-show bgp ipv4 unicast summary
-=============================
-BGP router identifier 10.1.1.1, local AS number 65111 vrf-id 0
-BGP table version 5
-RIB entries 9, using 1368 bytes of memory
-Peers 2, using 39 KiB of memory
-
-Neighbor        V         AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd
-spine01(swp1)   4      65333      47      47        0    0    0 00:01:50            3
-spine02(swp2)   4      65333      47      48        0    0    0 00:01:50            3
-
-Total number of neighbors 2
-
-
-show bgp ipv6 unicast summary
-=============================
-
-show bgp l2vpn evpn summary
-===========================
-BGP router identifier 10.1.1.1, local AS number 65111 vrf-id 0
-BGP table version 0
-RIB entries 3, using 456 bytes of memory
-Peers 2, using 39 KiB of memory
-
-Neighbor        V         AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd
-spine01(swp1)   4      65333      47      47        0    0    0 00:01:50            2
-spine02(swp2)   4      65333      47      48        0    0    0 00:01:50            2
-
-Total number of neighbors 2
+The CLAG status command will verify the CLAG peer status:
 
 ```
+cumulus@switch01:mgmt-vrf:~$ net show clag status
+The peer is alive
+     Our Priority, ID, and Role: 100 44:38:39:00:00:05 primary
+    Peer Priority, ID, and Role: 100 44:38:39:00:00:06 secondary
+          Peer Interface and IP: peerlink.4094 169.254.1.2
+                      Backup IP: 192.168.200.2 vrf mgmt (active)
+                     System MAC: 44:38:39:ff:01:56
 
-One should see that the loopback routes are installed with two next hops / ECMP for the other leaf:
-
-```
-cumulus@leaf01:mgmt-vrf:~$ net show route bgp
-RIB entry for bgp
-=================
-Codes: K - kernel route, C - connected, S - static, R - RIP,
-       O - OSPF, I - IS-IS, B - BGP, P - PIM, E - EIGRP, N - NHRP,
-       T - Table, v - VNC, V - VNC-Direct, A - Babel,
-       > - selected route, * - FIB route
-
-B>* 10.2.2.2/32 [20/0] via fe80::4638:39ff:fe00:6, swp1, 00:03:51
-  *                    via fe80::4638:39ff:fe00:4, swp2, 00:03:51
-B>* 10.3.3.3/32 [20/0] via fe80::4638:39ff:fe00:6, swp1, 00:03:51
-B>* 10.4.4.4/32 [20/0] via fe80::4638:39ff:fe00:4, swp2, 00:03:51
+CLAG Interfaces
+Our Interface      Peer Interface     CLAG Id   Conflicts              Proto-Down Reason
+----------------   ----------------   -------   --------------------   -----------------
+          bond01   -                  1         -                      -
 ```
 
-One can also view the MAC addresses of the two switches within the EVPN instance by running the following command:
+The most important link is the status of the "Backup IP." In the above, it is set to "active," which means that the two switches will form an LACP connection to the downstream server.
+
+One can see the various LACP interfaces and which bond / LACP member that they belong to:
 
 ```
-cumulus@switch01:mgmt-vrf:~$ net show evpn mac vni 11
-
-Number of MACs (local and remote) known for this VNI: 2
-MAC               Type   Intf/Remote VTEP      VLAN
-44:38:39:00:00:07 local  swp10                 11
-44:38:39:00:00:01 remote 10.2.2.2
+cumulus@switch01:mgmt-vrf:~$ net show interface bondmems
+    Name    Speed      MTU  Mode     Summary
+--  ------  -------  -----  -------  --------------------
+UP  swp1    1G        1500  LACP-UP  Master: bond01(DN)
+UP  swp2    1G        1500  LACP-UP  Master: peerlink(UP)
+UP  swp3    1G        1500  LACP-UP  Master: peerlink(UP)
 ```
+
+One can also see the bonds in a more concise output:
+
+```
+cumulus@switch01:mgmt-vrf:~$ net show interface bonds
+    Name      Speed      MTU  Mode    Summary
+--  --------  -------  -----  ------  --------------------------------
+DN  bond01    N/A       1500  LACP    Bond Members: swp1(UP)
+UP  peerlink  2G        1500  LACP    Bond Members: swp2(UP), swp3(UP)
+```
+
+There currently is no NCLU command to view the VRR interface. The easiest way is to check the "UP" state on the "-v" interface using Linux's "ip" command:
+
+```
+cumulus@switch01:mgmt-vrf:~$ ip address show | grep vlan100
+40: vlan100@bridge: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    inet 172.16.121.2/24 scope global vlan100
+41: vlan100-v0@vlan100: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    inet 172.16.121.1/24 scope global vlan100-v0
+```
+
+On the Linux server itself, one can view the status of the LACP bond on the "uplink" interface with the following command:
+
+```
+cumulus@server01:~$ cat /proc/net/bonding/uplink | grep Status
+MII Status: up
+MII Status: up
+MII Status: up
+```
+
 
 ### Errata
 
