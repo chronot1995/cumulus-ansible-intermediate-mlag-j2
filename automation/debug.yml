@@ -3,8 +3,8 @@
   gather_facts: yes
 
   tasks:
-#   - debug:
-#       msg: Ports {{ node[inventory_hostname].ports | join(" ") }}
+   - debug:
+       msg: Ports {{ node[inventory_hostname].mlag.members | join(" ") }}
 
 #   - debug:
 #       msg: add vlan {{ item.value.vlan }} ip address {{ item.value.ip }}
@@ -18,7 +18,7 @@
 #   - debug:
 #       msg: "{{ node[inventory_hostname].routing.lo | regex_replace('/32')}}"
 
-   - debug:
-       msg: add interface {{ item.key }} bridge {{ item.value.mode }} {{ item.value.vlans }}
-     with_dict:
-       - "{{ node[inventory_hostname].switching.interfaces }}"
+#   - debug:
+#       msg: add interface {{ item.key }} bridge {{ item.value.mode }} {{ item.value.vlans }}
+#     with_dict:
+#       - "{{ node[inventory_hostname].switching.interfaces }}"
