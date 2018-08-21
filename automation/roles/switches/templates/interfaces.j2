@@ -21,8 +21,8 @@ iface peerlink {{ node[inventory_hostname].mlag.members | join(" ") }}
 {% for interface in node[inventory_hostname]["mlag"]["interfaces"] -%}
 auto {{interface}}
 iface {{interface}}
-{#   bond-slaves {{ interface.members }}
-   bridge-access {{ interface.vlans }}
+   bond-slaves {{ node[inventory_hostname]["mlag"]["interfaces"][interface].members }}
+{#   bridge-access {{ interface.vlans }}
    clad-id {{ interface.clagid }}
 #}
 {% endfor %}
