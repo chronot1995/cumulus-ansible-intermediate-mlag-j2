@@ -31,7 +31,7 @@ auto {{interface}}
 iface {{interface}}
    bond-slaves {{ node[inventory_hostname]["mlag"]["interfaces"][interface].members }}
    bridge-access {{ node[inventory_hostname]["mlag"]["interfaces"][interface].vlans }}
-   clad-id {{ node[inventory_hostname]["mlag"]["interfaces"][interface].clagid }}
+   clag-id {{ node[inventory_hostname]["mlag"]["interfaces"][interface].clagid }}
 {% endfor %}
 
 auto bridge
