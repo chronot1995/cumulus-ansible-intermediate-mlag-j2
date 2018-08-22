@@ -61,8 +61,8 @@ node:
       address: 169.254.1.2/30
       backupip: 192.168.200.1
       members:
-      - swp2
-      - swp3
+        - swp2
+        - swp3
       peerip: 169.254.1.1
       sysmac: "44:38:39:FF:01:56"
       priority: 100

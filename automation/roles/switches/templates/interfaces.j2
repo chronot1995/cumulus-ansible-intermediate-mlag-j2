@@ -13,6 +13,7 @@ iface mgmt
 {% for interface in node[inventory_hostname]["ports"] %}
 auto {{interface}}
 iface {{interface}}
+   post-up ip link set {{interface}} promisc on
 
 {% endfor %}
 
