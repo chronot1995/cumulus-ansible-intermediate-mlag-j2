@@ -10,13 +10,14 @@ iface mgmt
   address 127.0.0.1/8
   vrf-table auto
 
-{% for interface in node[inventory_hostname]["ports"] -%}
+{% for interface in node[inventory_hostname]["ports"] %}
 auto {{interface}}
 iface {{interface}}
 {% endfor %}
 
 auto peerlink
-iface peerlink {{ node[inventory_hostname].mlag.members | join(" ") }}
+iface peerlink
+   bond-slaes {{ node[inventory_hostname].mlag.members | join(" ") }}
 
 auto peerlink.4094
 iface peerlink.4094
@@ -46,7 +47,7 @@ iface bridge
 auto {{vlanint}}
 iface {{vlanint}}
     address {{ node[inventory_hostname]["routing"]["svi"][vlanint]["ip"] }}
+    address-virtual {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["mac"] }} {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["ip"] }}
     vlan-id {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vlan"] }}
     vlan-raw-device bridge
-    address-virtual {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["mac"] }} {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["ip"] }}
 {% endfor %}
