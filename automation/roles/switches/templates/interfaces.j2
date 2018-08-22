@@ -34,6 +34,14 @@ iface {{interface}}
    clad-id {{ node[inventory_hostname]["mlag"]["interfaces"][interface].clagid }}
 {% endfor %}
 
+auto bridge
+iface bridge
+    bridge-ports {{ node[inventory_hostname].switching.bridge | join(" ") }}
+{% for bridgevlans in node[inventory_hostname]["switching"]["vlans"] %}
+    bridge-vids {{ bridgevlans }}
+{% endfor %}
+    bridge-vlan-aware yes
+
 {% for vlanint in node[inventory_hostname]["routing"]["svi"] -%}
 auto {{vlanint}}
 iface {{vlanint}}
@@ -42,11 +50,3 @@ iface {{vlanint}}
     vlan-raw-device bridge
     address-virtual {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["ip"] }} {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["mac"] }}
 {% endfor %}
-
-auto bridge
-iface bridge
-    bridge-ports {{ node[inventory_hostname].switching.bridge | join(" ") }}
-{% for bridgevlans in node[inventory_hostname]["switching"]["vlans"] %}
-    bridge-vids {{ bridgevlans }}
-{% endfor %}
-    bridge-vlan-aware yes
