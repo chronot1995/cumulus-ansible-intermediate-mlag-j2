@@ -18,7 +18,7 @@ iface {{interface}}
 
 auto peerlink
 iface peerlink
-   bond-slaes {{ node[inventory_hostname].mlag.members | join(" ") }}
+   bond-slaves {{ node[inventory_hostname].mlag.members | join(" ") }}
 
 auto peerlink.4094
 iface peerlink.4094
