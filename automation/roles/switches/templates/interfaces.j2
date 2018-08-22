@@ -48,5 +48,5 @@ iface {{vlanint}}
     address {{ node[inventory_hostname]["routing"]["svi"][vlanint]["ip"] }}
     vlan-id {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vlan"] }}
     vlan-raw-device bridge
-    address-virtual {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["ip"] }} {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["mac"] }}
+    address-virtual {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["mac"] }} {{ node[inventory_hostname]["routing"]["svi"][vlanint]["vrrp"]["ip"] }}
 {% endfor %}
