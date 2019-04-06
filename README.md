@@ -82,14 +82,14 @@ cumulus@switch01:mgmt-vrf:~$ net show clag status
 The peer is alive
      Our Priority, ID, and Role: 100 44:38:39:00:00:05 primary
     Peer Priority, ID, and Role: 100 44:38:39:00:00:06 secondary
-          Peer Interface and IP: peerlink.4094 169.254.1.2
+          Peer Interface and IP: peerlink.4094 fe80::4638:39ff:fe00:6 (linklocal)
                       Backup IP: 192.168.200.2 vrf mgmt (active)
                      System MAC: 44:38:39:ff:01:56
 
 CLAG Interfaces
 Our Interface      Peer Interface     CLAG Id   Conflicts              Proto-Down Reason
 ----------------   ----------------   -------   --------------------   -----------------
-          bond01   -                  1         -                      -
+          bond01   bond01             1         -                      -
 ```
 
 The most important link is the status of the "Backup IP." In the above, it is set to "active," which means that the two switches will form an LACP connection to the downstream server.
