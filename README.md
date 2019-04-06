@@ -1,5 +1,9 @@
 ## int-ansible-training-clag-j2
 
+### UPDATES
+
+04/06/2019 - Upgraded to 3.7.4, Added MLAG Unnumbered, Updated to Ansible 2.7, replaced old "shutdown" tasks with "reboot" tasks. 
+
 ### Summary:
 
 This is an Ansible demo which configures two Cumulus VX switches in a CLAG configuration with a Linux server. This demo will utilize Jinja2 / J2 templates and Ansible.
