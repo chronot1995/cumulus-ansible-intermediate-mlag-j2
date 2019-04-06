@@ -2,11 +2,11 @@
 
 ### UPDATES
 
-04/06/2019 - Upgraded to 3.7.4, Added MLAG Unnumbered, Updated to Ansible 2.7, replaced old "shutdown" tasks with "reboot" tasks. 
+04/06/2019 - Upgraded to 3.7.4, Added MLAG Unnumbered, Updated to Ansible 2.7, replaced old "shutdown" tasks with "reboot" tasks.
 
 ### Summary:
 
-This is an Ansible demo which configures two Cumulus VX switches in a CLAG configuration with a Linux server. This demo will utilize Jinja2 / J2 templates and Ansible.
+This is an Ansible demo which configures two Cumulus VX switches in an MLAG configuration with a Linux server. This demo will utilize Jinja2 / J2 templates and Ansible.
 
 ### Network Diagram:
 
@@ -55,7 +55,7 @@ First, make sure that the following is currently running on your machine:
 
     ```./provision.sh```
 
-This will bring run the automation script and configure the two switches with CLAG.
+This will bring run the automation script and configure the two switches with MLAG.
 
 ### Troubleshooting
 
@@ -75,7 +75,7 @@ Helpful Linux troubleshooting commands:
 - ip address <interface>
 - cat /proc/net/bonding/uplink
 
-The CLAG status command will verify the CLAG peer status:
+The MLAG status command will verify the MLAG peer status:
 
 ```
 cumulus@switch01:mgmt-vrf:~$ net show clag status
