@@ -34,8 +34,7 @@ node:
           mode:
           vlans:
       vlans:
-        - "100"
-        - "200"
+        - 100
     routing:
       lo:
       ospf:
